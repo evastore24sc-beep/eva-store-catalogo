@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eva Store | Catálogo Oficial</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fuentes Google Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Fondo dinámico animado -->
+    <div class="bg-glow"></div>
+
+    <!-- HEADER CON LOGO -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="img/IMG_0803.jpeg" alt="Eva Store Logo" class="brand-logo" id="logo-img">
+            <div class="brand-text">
+                <h1 class="brand-title">Eva Store</h1>
+                <span class="brand-badge">Beauty & Care</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Hero -->
+    <section class="hero-banner">
+        <span class="hero-tag">Catálogo 2026</span>
+        <h2>Encuentra todo para tu belleza</h2>
+        <p>Explora nuestras categorías exclusivas y solicita tu pedido directo a WhatsApp.</p>
+    </section>
+
+    <!-- Catálogo de Productos -->
+    <div class="catalog-wrapper">
+        
+        <!-- Barra de Navegación de Categorías -->
+        <nav class="filter-controls" id="filter-buttons">
+            <button class="filter-btn active" data-category="todos">Todos</button>
+            <button class="filter-btn" data-category="rostro">Rostro</button>
+            <button class="filter-btn" data-category="labios">Labios</button>
+            <button class="filter-btn" data-category="cejas">Cejas</button>
+            <button class="filter-btn" data-category="ojos">Ojos</button>
+            <button class="filter-btn" data-category="skincare">Skincare</button>
+        </nav>
+
+        <!-- Grilla de Productos (se llena dinámicamente con JS) -->
+        <main class="catalog-grid" id="catalog-grid">
+            <!-- Los productos aparecerán aquí automáticamente -->
+        </main>
+    </div>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <a href="https://wa.me/5712345678?text=Hola%20Eva%20Store,%20me%20gustaría%20recibir%20asesoría%20personalizada." class="whatsapp-float-pulse" target="_blank" aria-label="Contacto por WhatsApp">
+        <div class="pulse-ring"></div>
+        <svg viewBox="0 0 32 32" class="whatsapp-icon">
+            <path d="M16 2a13 13 0 0 0-11.25 19.5L3 29l7.73-1.68A13 13 0 1 0 16 2zm0 23.8a10.8 10.8 0 0 1-5.5-1.5l-.4-.2-4.1.9.9-3.9-.3-.4A10.8 10.8 0 1 1 16 25.8zm5.9-8.1c-.3-.2-1.9-1-2.2-1.1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1a8.1 8.1 0 0 1-2.4-1.5 8.9 8.9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6s.3-.4.5-.5a1.8 1.8 0 0 0 .3-.5.6.6 0 0 0 0-.6c-.1-.1-.7-1.7-.9-2.3s-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.4 3.4 14.6 14.6 0 0 0 5.6 4.9 19.2 19.2 0 0 0 1.9.7 4.5 4.5 0 0 0 2.1.1 3.4 3.4 0 0 0 2.2-1.6 2.8 2.8 0 0 0 .2-1.6c-.1-.1-.4-.2-.7-.3z"/>
+        </svg>
+        <span class="tooltip-text">¿Dudas? ¡Escríbenos!</span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 <strong>Eva Store</strong>. Todos los derechos reservados.</p>
+        <p class="footer-sub">Transformando tu rutina diaria en un ritual de belleza.</p>
+    </footer>
+
+    <!-- Archivo de JavaScript para cargar los productos -->
+    <script src="script.js"></script>
+</body>
+</html>

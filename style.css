@@ -1,0 +1,578 @@
+/* ==========================================================
+   RESET & VARIABLES
+   ========================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #c98860;          /* Rose Gold Premium */
+    --primary-light: #f7ebe1;    /* Destello Rosa Nude */
+    --accent: #d94e67;           /* Carmín vibrante */
+    --dark: #121113;             /* Negro Elegante */
+    --text-gray: #666063;        /* Gris suavizado */
+    --bg-main: #fcf9f6;          /* Fondo Marfil orgánico */
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.9);
+    --whatsapp: #25d366;
+    --whatsapp-glow: rgba(37, 211, 102, 0.4);
+    --shadow-premium: 0 20px 40px rgba(18, 17, 19, 0.05);
+    --shadow-hover: 0 25px 50px rgba(201, 136, 96, 0.22);
+    --radius: 24px;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--dark);
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ==========================================================
+   FONDO ANIMADO
+   ========================================================== */
+.bg-glow {
+    position: fixed;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 600px;
+    background: radial-gradient(circle, rgba(247,235,225,0.8) 0%, rgba(252,249,246,0) 70%);
+    z-index: -1;
+    pointer-events: none;
+    animation: pulseGlow 8s infinite alternate ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0% { opacity: 0.5; transform: translateX(-50%) scale(0.9); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+
+/* ==========================================================
+   HEADER Y LOGO
+   ========================================================== */
+.header {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0.8rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre el logo y el texto */
+}
+
+/* Estilo para el Logo de Eva Store */
+.brand-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%; /* Lo hace circular */
+    border: 2px solid var(--primary-light);
+    box-shadow: 0 4px 12px rgba(201, 136, 96, 0.15);
+    transition: var(--transition);
+}
+
+.brand-logo:hover {
+    transform: scale(1.08) rotate(3deg);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.brand-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+}
+
+/* ==========================================================
+   HERO BANNER
+   ========================================================== */
+.hero-banner {
+    text-align: center;
+    padding: 3.5rem 1.5rem 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.hero-tag {
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.hero-banner h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+}
+
+.hero-banner p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+}
+
+/* ==========================================================
+   SISTEMA DE FILTROS EN CSS PURO (5 CATEGORÍAS)
+   ========================================================== */
+.catalog-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 4rem;
+}
+
+input[name="category-filter"] {
+    display: none;
+}
+
+.filter-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 22px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.filter-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Resaltado de Pestaña Seleccionada */
+#filter-todos:checked ~ .filter-controls label[for="filter-todos"],
+#filter-rostro:checked ~ .filter-controls label[for="filter-rostro"],
+#filter-labios:checked ~ .filter-controls label[for="filter-labios"],
+#filter-cejas:checked ~ .filter-controls label[for="filter-cejas"],
+#filter-ojos:checked ~ .filter-controls label[for="filter-ojos"],
+#filter-skincare:checked ~ .filter-controls label[for="filter-skincare"] {
+    background-color: var(--dark);
+    color: white;
+    border-color: var(--dark);
+    box-shadow: 0 8px 20px rgba(18, 17, 19, 0.15);
+}
+
+/* Lógica de Ocultar/Mostrar según la Categoría sin JS */
+#filter-rostro:checked ~ .catalog-grid .product-card:not(.card-rostro),
+#filter-labios:checked ~ .catalog-grid .product-card:not(.card-labios),
+#filter-cejas:checked ~ .catalog-grid .product-card:not(.card-cejas),
+#filter-ojos:checked ~ .catalog-grid .product-card:not(.card-ojos),
+#filter-skincare:checked ~ .catalog-grid .product-card:not(.card-skincare) {
+    display: none;
+}
+
+/* ==========================================================
+   GRILLA Y TARJETAS DINÁMICAS
+   ========================================================== */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 2rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-premium);
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Badges */
+.badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 10;
+}
+
+.badge-glow {
+    background: linear-gradient(135deg, var(--primary) 0%, #a8653e 100%);
+    box-shadow: 0 4px 12px rgba(201, 136, 96, 0.4);
+}
+
+.badge-hot {
+    background: linear-gradient(135deg, var(--accent) 0%, #b0263f 100%);
+    box-shadow: 0 4px 12px rgba(217, 78, 103, 0.4);
+}
+
+/* Imagen con Zoom Ajustada */
+.product-image {
+    position: relative !important;
+    width: 100% !important;
+    height: 250px !important;
+    overflow: hidden !important;
+    background-color: #f8f8f8;
+}
+
+.product-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.08);
+}
+
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(18, 17, 19, 0.2) 0%, transparent 50%);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.product-card:hover .image-overlay {
+    opacity: 1;
+}
+
+/* Información */
+.product-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.category-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary);
+    margin-bottom: 0.4rem;
+}
+
+.product-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+    color: var(--dark);
+}
+
+.product-description {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+/* Footer Tarjeta */
+.product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #f4f0ec;
+}
+
+.price-container {
+    display: flex;
+    align-items: flex-start;
+    color: var(--dark);
+    font-weight: 700;
+}
+
+.currency {
+    font-size: 0.85rem;
+    margin-right: 2px;
+    margin-top: 2px;
+    color: var(--primary);
+}
+
+.price {
+    font-size: 1.35rem;
+}
+
+/* Botón Pedir */
+.btn-card-ws {
+    background-color: var(--dark);
+    color: white;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.btn-icon {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+}
+
+.btn-card-ws:hover {
+    background-color: var(--whatsapp);
+    box-shadow: 0 6px 18px var(--whatsapp-glow);
+}
+
+.btn-card-ws:hover .btn-icon {
+    transform: translateX(4px);
+}
+
+//* ==========================================================
+   ESTILOS PARA EL DESPLEGABLE DE TONOS (SELECCIÓN GRIS OSCURO)
+   ========================================================== */
+.shade-select-box {
+    margin: 0.8rem 0 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.shade-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.shade-dropdown {
+    width: 100%;
+    padding: 10px 18px;
+    border: 1.5px solid var(--primary-light);
+    border-radius: 30px;
+    background-color: white;
+    color: var(--dark);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    /* Flecha personalizada */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23121113' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px;
+    padding-right: 36px;
+}
+
+.shade-dropdown:hover,
+.shade-dropdown:focus {
+    border-color: var(--dark) !important;
+    box-shadow: 0 4px 15px rgba(18, 17, 19, 0.1);
+}
+
+/* Estilo unificado para todas las opciones sin degradados ni dobles tonos */
+.shade-dropdown option {
+    background-color: #ffffff;
+    color: #121113;
+    padding: 10px;
+}
+
+/* Forzar un solo tono gris claro/oscuro al seleccionar */
+.shade-dropdown option:hover,
+.shade-dropdown option:focus,
+.shade-dropdown option:active,
+.shade-dropdown option:checked {
+    background-color: #333033 !important; /* Gris oscuro uniforme */
+    color: #ffffff !important;            /* Texto blanco uniforme */
+}
+
+/* ==========================================================
+   BOTÓN FLOTANTE WHATSAPP CON PULSACIÓN DING
+   ========================================================== */
+.whatsapp-float-pulse {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--whatsapp);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    box-shadow: 0 10px 25px var(--whatsapp-glow);
+    transition: var(--transition);
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--whatsapp);
+    animation: ripple 2s infinite ease-out;
+}
+
+@keyframes ripple {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+.whatsapp-float-pulse:hover {
+    transform: scale(1.1) rotate(8deg);
+}
+
+.whatsapp-icon {
+    width: 34px;
+    height: 34px;
+    fill: white;
+    z-index: 2;
+}
+
+/* Tooltip */
+.tooltip-text {
+    position: absolute;
+    right: 75px;
+    background-color: var(--dark);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.whatsapp-float-pulse:hover .tooltip-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+.footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background: white;
+    border-top: 1px solid #f4f0ec;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.footer-sub {
+    font-size: 0.75rem;
+    margin-top: 4px;
+    color: #a09a9d;
+    font-style: italic;
+}
+
+/* KEYFRAMES ENTRADA */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================
+   ADAPTABILIDAD MÓVIL
+   ========================================================== */
+@media (max-width: 600px) {
+    .brand-title { font-size: 1.8rem; }
+    .hero-banner h2 { font-size: 2.1rem; }
+    .catalog-grid { grid-template-columns: 1fr; }
+    .filter-btn { padding: 8px 16px; font-size: 0.78rem; }
+    .whatsapp-float-pulse { bottom: 20px; right: 20px; width: 56px; height: 56px; }
+    .whatsapp-icon { width: 28px; height: 28px; }
+}
+
+/* Estado activo del botón de filtro mediante JavaScript */
+.filter-btn.active {
+    background-color: var(--dark) !important;
+    color: white !important;
+    border-color: var(--dark) !important;
+    box-shadow: 0 8px 20px rgba(18, 17, 19, 0.15);
+}
