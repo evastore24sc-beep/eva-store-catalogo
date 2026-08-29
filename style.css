@@ -394,7 +394,7 @@ input[name="category-filter"] {
     transform: translateX(4px);
 }
 
-//* ==========================================================
+ /* ==========================================================
    ESTILOS PARA EL DESPLEGABLE DE TONOS (SELECCIÓN GRIS OSCURO)
    ========================================================== */
 .shade-select-box {
@@ -575,4 +575,240 @@ input[name="category-filter"] {
     color: white !important;
     border-color: var(--dark) !important;
     box-shadow: 0 8px 20px rgba(18, 17, 19, 0.15);
+}
+/* ==========================================================
+   ESTILOS DEL CARRITO DE COMPRAS Y MODAL
+   ========================================================== */
+
+/* Botón flotante del carrito */
+.cart-toggle-btn {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.cart-toggle-btn:hover {
+    transform: scale(1.08);
+    background-color: var(--primary);
+}
+
+.cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+
+/* Modal del Carrito */
+.cart-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cart-modal.active {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.cart-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+}
+
+.cart-content {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+    background-color: white;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+}
+
+.cart-modal.active .cart-content {
+    transform: translateX(0);
+}
+
+.cart-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-header h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--dark);
+}
+
+.cart-close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-gray);
+}
+
+.cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.cart-empty-text {
+    text-align: center;
+    color: var(--text-gray);
+    margin-top: 3rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.cart-item-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.cart-item-info {
+    flex-grow: 1;
+}
+
+.cart-item-info h4 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.cart-item-shade {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-gray);
+}
+
+.cart-item-price {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-main);
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+
+.cart-item-controls button {
+    background: white;
+    border: 1px solid #ddd;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cart-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fafafa;
+}
+
+.cart-total-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 1.2rem;
+}
+
+.btn-enviar-ws {
+    width: 100%;
+    background-color: var(--whatsapp);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px var(--whatsapp-glow);
+    transition: var(--transition);
+}
+
+.btn-enviar-ws:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--whatsapp-glow);
+}
+
+/* Ajuste del botón Agregar en las tarjetas */
+.btn-card-add {
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-card-add:hover {
+    background-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(201, 136, 96, 0.3);
 }

@@ -3,15 +3,18 @@
 // =========================================================
 const TEL_WHATSAPP = "+584149765297"; 
 
+// Estructura del Carrito
+let carrito = [];
+
 // =========================================================
-// LISTA DE PRODUCTOS (Agrega la propiedad `tonos: [...]` si el producto los tiene)
+// LISTA DE PRODUCTOS
 // =========================================================
 const productos = [
     {
         id: 6,
         nombre: "Base Raquel Detox",
         descripcion: "Ideal para quienes buscan un cubrimiento eficiente sin sensación pesada en todo el día.",
-        precio: "34.000",
+        precio: 34000,
         categoria: "rostro",
         imagen: "img/Base-raquel-detox.jpeg",
         badge: "glow",
@@ -22,18 +25,18 @@ const productos = [
         id: 1,
         nombre: "Base Matte Liquida Dolce Bella",
         descripcion: "Base líquida de acabado mate, cobertura media a alta y larga duración. Contenido 30ml.",
-        precio: "24.000",
+        precio: 15000,
         categoria: "rostro",
-        imagen: "img/Base-Dolce-Bella.jpeg",
+        imagen: "img/base-mate-dolcebella2.jpg",
         badge: "hot",
         badgeText: "Más Vendido",
-        tonos: ["Tono 2", "Tono 3", "Tono 4","Tono 5"]
+        tonos: ["Tono Light 01", "Tono Medium 02", "Tono Tan 03"]
     },
     {
         id: 2,
         nombre: "Base Ruby Rose Soft Mate",
         descripcion: "Base suave de alta cobertura con acabado mate terciopelo.",
-        precio: "32.000",
+        precio: 32000,
         categoria: "rostro",
         imagen: "img/Base-ruby-rose-soft-mate.jpeg",
         badge: "glow",
@@ -44,18 +47,18 @@ const productos = [
         id: 3,
         nombre: "Base 4 en 1 Radiant",
         descripcion: "Multifuncional: Útil como base, primer, corrector e iluminador.",
-        precio: "10.000",
+        precio: 10000,
         categoria: "rostro",
-        imagen: "img/Base-4en1.jpeg",
+        imagen: "img/Base-radiant-4ft.jpeg",
         badge: "glow",
         badgeText: "Oferta",
-        tonos: ["Tono 01", "Tono 02","Tono 03", "Tono 04","Tono 05", "Tono 06"]
+        tonos: ["Tono Claro 01", "Tono Medio 02"]
     },
     {
         id: 4,
         nombre: "Corrector Bloomshell",
         descripcion: "Alta cobertura para ojeras e imperfecciones.",
-        precio: "22.000", 
+        precio: 22000, 
         categoria: "rostro",
         imagen: "img/Corrector-Bloomshell.jpeg",
         badge: null,
@@ -66,61 +69,55 @@ const productos = [
         id: 5,
         nombre: "Bases Economicas Versatile",
         descripcion: "Base económica de uso diario.",
-        precio: "8.000 c/u",
+        precio: 8000,
         categoria: "rostro",
         imagen: "img/Base-economica.jpg",
         badge: "hot",
         badgeText: "Oferta",
-        tonos: ["Tono 1", "Tono 4"]
+        tonos: ["Tono Beige", "Tono Natural", "Tono Nude"]
     },
     {
         id: 7,
         nombre: "Base Mate Only Beauty",
         descripcion: "Diseñada para proporcionar un acabado suave y sin brillos.",
-        precio: "15.000",
+        precio: 15000,
         categoria: "rostro",
         imagen: "img/Base-only-beauty-mate.jpeg",
         badge: "glow",
         badgeText: "Nuevo",
-        tonos: ["Tono 10", "Tono 12"]
+        tonos: ["Tono Porcelain", "Tono Warm Beige"]
     },
     {
         id: 8,
         nombre: "Base Ruby Rose Look Natural",
         descripcion: "Base ligera de cobertura media con acabado natural.",
-        precio: "32.000",
+        precio: 32000,
         categoria: "rostro",
         imagen: "img/Base-Ruby-Rose-Natural-Look.jpeg",
         badge: "glow",
         badgeText: "Nuevo",
-        tonos: ["Tono 1", "Tono 2", "Tono 3", "Tono 4","Tono 6","Tono 7"]
+        tonos: ["Nude 1", "Nude 2", "Beige 2", "Beige 3"]
     },
     {
         id: 9,
         nombre: "BB Cream Trendy",
         descripcion: "Base ligera hidratante de uso diario.",
-        precio: "15.000",
+        precio: 15000,
         categoria: "rostro",
-        imagen: "img/IMG_1457.jpeg",
+        imagen: "img/BB-cream.jpeg",
         badge: "glow",
         badgeText: "Oferta",
         tonos: ["Tono 4"]
-    },
-    {
-        id: 10,
-        nombre: "Corrector Majikal",
-        descripcion: "Consigue una piel uniforme y duradera con nuestro corrector.",
-        precio: "37.000",
-        categoria: "rostro",
-        imagen: "img/Corrector-Magikal-Mate.jpeg",
-        badge: "glow",
-        badgeText: "Nuevo",
-        tonos: ["Tono 00","Tono 1","Tono 3","Tono 4"]
     }
 ];
 
+// Formateador de precios en miles
+function formatearPrecio(precio) {
+    return precio.toLocaleString('es-CO');
+}
+
 // =========================================================
-// LÓGICA DE RENDERIZADO Y WHATSAPP DINÁMICO
+// RENDERIZADO DEL CATÁLOGO
 // =========================================================
 
 const catalogGrid = document.getElementById("catalog-grid");
@@ -141,28 +138,20 @@ function renderProducts(categoryFilter = "todos") {
     }
 
     filteredProducts.forEach(prod => {
-        // Generar selector de tonos si el producto tiene lista de tonos
         let selectTonosHTML = "";
-        let textoTonoMensaje = "";
 
         if (prod.tonos && prod.tonos.length > 0) {
             const options = prod.tonos.map(t => `<option value="${t}">${t}</option>`).join('');
             selectTonosHTML = `
                 <div class="shade-select-box">
                     <label for="select-${prod.id}" class="shade-label">Selecciona tu tono:</label>
-                    <select id="select-${prod.id}" class="shade-dropdown" onchange="actualizarMensajeWS(${prod.id})">
+                    <select id="select-${prod.id}" class="shade-dropdown">
                         ${options}
                     </select>
                 </div>
             `;
-            // Por defecto toma el primer tono de la lista
-            textoTonoMensaje = ` (Tono: ${prod.tonos[0]})`;
         }
 
-        const mensajeWS = encodeURIComponent(`Hola Eva Store, quiero pedir: ${prod.nombre}${textoTonoMensaje} ($${prod.precio})`);
-        const urlWS = `https://wa.me/${TEL_WHATSAPP}?text=${mensajeWS}`;
-
-        // Badge HTML
         let badgeHTML = "";
         if (prod.badge) {
             const badgeClass = prod.badge.toLowerCase() === "hot" ? "badge-hot" : "badge-glow";
@@ -188,12 +177,11 @@ function renderProducts(categoryFilter = "todos") {
                 <div class="product-footer">
                     <div class="price-container">
                         <span class="currency">$</span>
-                        <span class="price">${prod.precio}</span>
+                        <span class="price">${formatearPrecio(prod.precio)}</span>
                     </div>
-                    <a href="${urlWS}" class="btn-card-ws" target="_blank" rel="noopener noreferrer">
-                        <span>Pedir</span>
-                        <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </a>
+                    <button class="btn-card-add" onclick="agregarAlCarrito(${prod.id})">
+                        <span>+ Agregar</span>
+                    </button>
                 </div>
             </div>
         `;
@@ -201,24 +189,119 @@ function renderProducts(categoryFilter = "todos") {
     });
 }
 
-// Función que actualiza el enlace de WhatsApp al cambiar el tono en el desplegable
-function actualizarMensajeWS(idProducto) {
+// =========================================================
+// FUNCIONES DEL CARRITO DE COMPRAS
+// =========================================================
+
+function agregarAlCarrito(idProducto) {
     const prod = productos.find(p => p.id === idProducto);
     if (!prod) return;
 
     const select = document.getElementById(`select-${idProducto}`);
     const tonoSeleccionado = select ? select.value : "";
-    
-    // Buscar el botón 'Pedir' dentro de la tarjeta del producto
-    const card = document.querySelector(`.product-card[data-id="${idProducto}"]`);
-    if (!card) return;
-    
-    const btnWS = card.querySelector('.btn-card-ws');
 
-    const textoTono = tonoSeleccionado ? ` (Tono: ${tonoSeleccionado})` : "";
-    const nuevoMensaje = encodeURIComponent(`Hola Eva Store, quiero pedir: ${prod.nombre}${textoTono} ($${prod.precio})`);
-    
-    btnWS.href = `https://wa.me/${TEL_WHATSAPP}?text=${nuevoMensaje}`;
+    // Buscar si ya existe el producto con el MISMO tono en el carrito
+    const itemExistente = carrito.find(item => item.id === idProducto && item.tono === tonoSeleccionado);
+
+    if (itemExistente) {
+        itemExistente.cantidad += 1;
+    } else {
+        carrito.push({
+            id: prod.id,
+            nombre: prod.nombre,
+            precio: prod.precio,
+            tono: tonoSeleccionado,
+            imagen: prod.imagen,
+            cantidad: 1
+        });
+    }
+
+    actualizarCarritoUI();
+    toggleCartModal(true); // Abre el modal automáticamente al agregar
+}
+
+function cambiarCantidad(id, tono, cambio) {
+    const item = carrito.find(i => i.id === id && i.tono === tono);
+    if (!item) return;
+
+    item.cantidad += cambio;
+
+    if (item.cantidad <= 0) {
+        carrito = carrito.filter(i => !(i.id === id && i.tono === tono));
+    }
+
+    actualizarCarritoUI();
+}
+
+function actualizarCarritoUI() {
+    const cartItemsContainer = document.getElementById("cart-items");
+    const cartCount = document.getElementById("cart-count");
+    const cartTotal = document.getElementById("cart-total");
+
+    // Contador de items
+    const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+    cartCount.innerText = totalCantidad;
+
+    // Calcular total
+    const totalPrecio = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+    cartTotal.innerText = `$${formatearPrecio(totalPrecio)}`;
+
+    // Renderizar lista en modal
+    if (carrito.length === 0) {
+        cartItemsContainer.innerHTML = `<p class="cart-empty-text">Tu carrito está vacío 🛍️</p>`;
+        return;
+    }
+
+    cartItemsContainer.innerHTML = "";
+    carrito.forEach(item => {
+        const itemElement = document.createElement("div");
+        itemElement.className = "cart-item";
+        itemElement.innerHTML = `
+            <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img">
+            <div class="cart-item-info">
+                <h4>${item.nombre}</h4>
+                ${item.tono ? `<small class="cart-item-shade">Tono: ${item.tono}</small>` : ''}
+                <span class="cart-item-price">$${formatearPrecio(item.precio * item.cantidad)}</span>
+            </div>
+            <div class="cart-item-controls">
+                <button onclick="cambiarCantidad(${item.id}, '${item.tono}', -1)">-</button>
+                <span>${item.cantidad}</span>
+                <button onclick="cambiarCantidad(${item.id}, '${item.tono}', 1)">+</button>
+            </div>
+        `;
+        cartItemsContainer.appendChild(itemElement);
+    });
+}
+
+// Abrir/Cerrar Modal
+function toggleCartModal(forceOpen = false) {
+    const modal = document.getElementById("cart-modal");
+    if (forceOpen) {
+        modal.classList.add("active");
+    } else {
+        modal.classList.toggle("active");
+    }
+}
+
+// Enviar a WhatsApp
+function enviarPedidoWhatsApp() {
+    if (carrito.length === 0) {
+        alert("Tu carrito está vacío. Agrega algunos productos primero.");
+        return;
+    }
+
+    let textoPedido = "Hola Eva Store, me gustaría realizar el siguiente pedido:\n\n";
+
+    carrito.forEach((item, index) => {
+        const tonoTxt = item.tono ? ` (Tono: ${item.tono})` : "";
+        textoPedido += `${index + 1}. *${item.nombre}*${tonoTxt}\n   Cantidad: ${item.cantidad} x $${formatearPrecio(item.precio)} = *$${formatearPrecio(item.precio * item.cantidad)}*\n\n`;
+    });
+
+    const totalPrecio = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+    textoPedido += `*Total a pagar: $${formatearPrecio(totalPrecio)}*`;
+
+    const url = `https://wa.me/${TEL_WHATSAPP}?text=${encodeURIComponent(textoPedido)}`;
+    window.open(url, "_blank");
 }
 
 // Filtros
