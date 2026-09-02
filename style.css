@@ -868,3 +868,247 @@ input[name="category-filter"] {
 .clear-search-btn:hover {
     color: var(--dark);
 }
+/* Botón de apertura en la esquina superior izquierda */
+.btn-menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-menu-toggle:hover {
+  background-color: #218838;
+  transform: scale(1.03);
+}
+
+/* Fondo oscuro translúcido */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Estructura del Panel Lateral */
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: -280px; /* Escondido por defecto */
+  width: 280px;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 1100;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-menu.active {
+  left: 0; /* Deslizar hacia adentro */
+}
+
+.sidebar-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.btn-close-menu {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #888;
+}
+
+/* Lista de Categorías */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.btn-sidebar-cat {
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sidebar-cat:hover, .btn-sidebar-cat.active {
+  background-color: #28a745;
+  color: #ffffff;
+  border-color: #28a745;
+  font-weight: bold;
+}
+/* =========================================================
+   ESTILOS DOCK / MENÚ LATERAL Y BOTÓN CATEGORÍAS (LILA)
+   ========================================================= */
+
+/* Botón flotante para abrir el menú (Lila) */
+.btn-menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background-color: #a876c5; /* Color Lila Principal */
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(168, 118, 197, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-menu-toggle:hover {
+  background-color: #9258b3; /* Lila un poco más oscuro al pasar el cursor */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(168, 118, 197, 0.45);
+}
+
+/* Fondo oscuro al abrir el panel */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 1050;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Panel Lateral */
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: -290px;
+  width: 290px;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 1100;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-menu.active {
+  left: 0;
+}
+
+.sidebar-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0e6f5;
+  background-color: #fcf8ff;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #5c3575; /* Título en morado/lila oscuro */
+  font-weight: 700;
+}
+
+.btn-close-menu {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #a876c5;
+  transition: color 0.2s ease;
+}
+
+.btn-close-menu:hover {
+  color: #7b429e;
+}
+
+/* Navegación y Botones de Categorías */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 15px;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.btn-sidebar-cat {
+  width: 100%;
+  text-align: left;
+  padding: 12px 18px;
+  background-color: #fbf7fd;
+  border: 1px solid #f0e1f7;
+  color: #555;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Efecto Hover y Selección en Lila */
+.btn-sidebar-cat:hover {
+  background-color: #f3e8f8;
+  color: #7b429e;
+  border-color: #d8b4e8;
+  transform: translateX(4px);
+}
+
+.btn-sidebar-cat.active {
+  background-color: #a876c5; /* Fondo lila seleccionado */
+  color: #ffffff;             /* Texto blanco */
+  border-color: #a876c5;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(168, 118, 197, 0.3);
+}
