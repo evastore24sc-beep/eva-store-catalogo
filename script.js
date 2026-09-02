@@ -19,15 +19,14 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // =========================================================
-// VARIABLES GLOBALES
+// VARIABLES GLOBALES Y ELEMENTOS DEL DOM
 // =========================================================
 const TEL_WHATSAPP = "+584149765297"; 
 let carrito = [];
 let productos = []; // Se llena dinámicamente desde Firestore
+let categoriaSeleccionada = "todos";
 
-// Elementos del DOM
 const catalogGrid = document.getElementById("catalog-grid");
-const filterButtons = document.querySelectorAll(".filter-btn");
 
 // =========================================================
 // CARGA DESDE FIRESTORE
@@ -42,7 +41,7 @@ async function obtenerProductosFirestore() {
         querySnapshot.forEach((doc) => {
             productos.push({ id: doc.id, ...doc.data() });
         });
-        renderProducts();
+        aplicarFiltrosCatalogo();
     } catch (error) {
         console.error("Error al cargar productos desde Firestore:", error);
         if (catalogGrid) {
@@ -54,6 +53,12 @@ async function obtenerProductosFirestore() {
 // Formateador de precios en miles
 function formatearPrecio(precio) {
     return Number(precio || 0).toLocaleString('es-CO');
+}
+
+// Helper para normalizar textos (elimina tildes y convierte a minúsculas)
+function normalizarTexto(str) {
+    if (!str) return "";
+    return str.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 }
 
 // =========================================================
@@ -110,31 +115,124 @@ function generarCardHTML(prod) {
     return card;
 }
 
-function renderProducts(categoryFilter = "todos") {
+// Función principal que aplica Búsqueda + Categoría + Orden Alfabético
+function aplicarFiltrosCatalogo() {
     if (!catalogGrid) return;
-    
-    catalogGrid.innerHTML = "";
 
-    // 1. Ordenar la lista alfabéticamente (A-Z)
-    const productosOrdenados = [...productos].sort((a, b) => 
+    const searchInput = document.getElementById("search-input");
+    const clearBtn = document.getElementById("clear-search");
+    const query = searchInput ? normalizarTexto(searchInput.value) : "";
+
+    if (clearBtn) {
+        clearBtn.style.display = query.length > 0 ? "block" : "none";
+    }
+
+    // 1. Filtrar por Categoría y Texto de Búsqueda
+    let resultados = productos.filter(p => {
+        const catProducto = normalizarTexto(p.categoria);
+        const catFiltro = normalizarTexto(categoriaSeleccionada);
+        
+        const coincideCategoria = (catFiltro === "todos" || catProducto === catFiltro);
+
+        const nombreProd = normalizarTexto(p.nombre);
+        const descProd = normalizarTexto(p.descripcion);
+        const coincideTexto = query === "" || nombreProd.includes(query) || descProd.includes(query);
+
+        return coincideCategoria && coincideTexto;
+    });
+
+    // 2. Ordenar alfabéticamente (A-Z)
+    resultados.sort((a, b) => 
         a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
     );
 
-    // 2. Filtrar por categoría
-    const filteredProducts = categoryFilter === "todos" 
-        ? productosOrdenados 
-        : productosOrdenados.filter(p => p.categoria === categoryFilter);
+    // 3. Renderizar en el DOM
+    catalogGrid.innerHTML = "";
 
-    if (filteredProducts.length === 0) {
-        catalogGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 2rem;">No hay productos en esta categoría por el momento.</p>`;
+    if (resultados.length === 0) {
+        const msj = query 
+            ? `No encontramos productos con "${searchInput.value}"`
+            : `No hay productos disponibles en esta categoría.`;
+
+        catalogGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem;">
+                <p style="font-size: 1.1rem; color: #222; font-weight: 600;">${msj}</p>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Intenta explorar otras categorías o realizar una búsqueda diferente.</p>
+            </div>
+        `;
         return;
     }
 
-    // 3. Renderizar en pantalla
-    filteredProducts.forEach(prod => {
+    resultados.forEach(prod => {
         const cardNode = generarCardHTML(prod);
         catalogGrid.appendChild(cardNode);
     });
+}
+
+// =========================================================
+// MENÚ LATERAL DE CATEGORÍAS
+// =========================================================
+function toggleMenuLateral(abrir) {
+    const sidebar = document.getElementById("sidebar-menu");
+    const overlay = document.getElementById("menu-overlay");
+
+    if (sidebar && overlay) {
+        if (abrir) {
+            sidebar.classList.add("active");
+            overlay.classList.add("active");
+        } else {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        }
+    }
+}
+
+function filtrarCategoriaMain(categoria, btnElement) {
+    categoriaSeleccionada = categoria;
+
+    // Actualizar estilo activo en los botones del panel
+    const botones = document.querySelectorAll(".btn-sidebar-cat");
+    botones.forEach(btn => btn.classList.remove("active"));
+    if (btnElement) btnElement.classList.add("active");
+
+    // Reaplicar filtros y cerrar menú
+    aplicarFiltrosCatalogo();
+    toggleMenuLateral(false);
+
+    // 🚀 DESPLAZAMIENTO HASTA EL BUSCADOR (CON MAYOR MARGEN SUPERIOR)
+    const searchContainer = document.querySelector(".search-container") || document.getElementById("search-input");
+    
+    if (searchContainer) {
+        // Aumentamos el offset a 160px para que suba más la página y el buscador quede bien arriba
+        const offset = 190; 
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = searchContainer.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+            top: offsetPosition < 0 ? 0 : offsetPosition, // Evita valores negativos
+            behavior: "smooth"
+        });
+    } else {
+        // Respaldo: Inicio absoluto de la página
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+}
+
+// =========================================================
+// LÓGICA DEL BUSCADOR
+// =========================================================
+function filtrarPorNombre() {
+    aplicarFiltrosCatalogo();
+}
+
+function limpiarBuscador() {
+    const searchInput = document.getElementById("search-input");
+    if (searchInput) {
+        searchInput.value = "";
+        aplicarFiltrosCatalogo();
+    }
 }
 
 // =========================================================
@@ -249,90 +347,16 @@ function enviarPedidoWhatsApp() {
 }
 
 // =========================================================
-// LÓGICA DEL BUSCADOR
+// REGISTRO GLOBAL Y CARGA INICIAL
 // =========================================================
-function filtrarPorNombre() {
-    const searchInput = document.getElementById("search-input");
-    const clearBtn = document.getElementById("clear-search");
-
-    if (!searchInput) return;
-
-    const query = searchInput.value.toLowerCase().trim();
-
-    if (clearBtn) {
-        clearBtn.style.display = query.length > 0 ? "block" : "none";
-    }
-
-    if (query.length > 0) {
-        filterButtons.forEach(b => b.classList.remove("active"));
-    } else {
-        const btnTodos = document.querySelector('.filter-btn[data-category="todos"]');
-        if (btnTodos) btnTodos.classList.add("active");
-    }
-
-    if (!catalogGrid) return;
-
-    const resultados = productos.filter(p => 
-        p.nombre.toLowerCase().includes(query) || 
-        (p.descripcion && p.descripcion.toLowerCase().includes(query))
-    );
-
-    resultados.sort((a, b) => 
-        a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
-    );
-
-    catalogGrid.innerHTML = "";
-
-    if (resultados.length === 0) {
-        catalogGrid.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem;">
-                <p style="font-size: 1.1rem; color: var(--dark, #222); font-weight: 600;">No encontramos productos con "${query}"</p>
-                <p style="font-size: 0.85rem; color: var(--text-gray, #666); margin-top: 5px;">Intenta buscar con otra palabra como "Base", "Ruby Rose" o "Dolce Bella".</p>
-            </div>
-        `;
-        return;
-    }
-
-    resultados.forEach(prod => {
-        const cardNode = generarCardHTML(prod);
-        catalogGrid.appendChild(cardNode);
-    });
-}
-
-function limpiarBuscador() {
-    const searchInput = document.getElementById("search-input");
-    if (searchInput) {
-        searchInput.value = "";
-        filtrarPorNombre();
-    }
-}
-
-// =========================================================
-// REGISTRO GLOBAL Y EVENT LISTENERS
-// =========================================================
-
-// Exposición al objeto window para soportar eventos HTML (onclick, oninput)
 window.agregarAlCarrito = agregarAlCarrito;
 window.cambiarCantidad = cambiarCantidad;
 window.toggleCartModal = toggleCartModal;
 window.enviarPedidoWhatsApp = enviarPedidoWhatsApp;
 window.filtrarPorNombre = filtrarPorNombre;
 window.limpiarBuscador = limpiarBuscador;
-
-filterButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const searchInput = document.getElementById("search-input");
-        const clearBtn = document.getElementById("clear-search");
-        
-        if (searchInput) searchInput.value = "";
-        if (clearBtn) clearBtn.style.display = "none";
-
-        filterButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const category = btn.getAttribute("data-category");
-        renderProducts(category);
-    });
-});
+window.toggleMenuLateral = toggleMenuLateral;
+window.filtrarCategoriaMain = filtrarCategoriaMain;
 
 // Carga inicial
 document.addEventListener("DOMContentLoaded", () => {
