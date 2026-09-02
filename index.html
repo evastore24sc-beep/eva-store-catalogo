@@ -15,7 +15,34 @@
     <!-- Fondo dinámico animado -->
     <div class="bg-glow"></div>
 
-    <!-- HEADER CON LOGO -->
+    <!-- BOTÓN FIJO DE MENÚ DE CATEGORÍAS (Parte superior izquierda) -->
+    <button id="btn-open-menu" class="btn-menu-toggle" onclick="toggleMenuLateral(true)">
+        ☰ Categorías
+    </button>
+
+    <!-- OVERLAY / FONDO OSCURO PARA EL MENÚ LATERAL -->
+    <div id="menu-overlay" class="menu-overlay" onclick="toggleMenuLateral(false)"></div>
+
+    <!-- PANEL LATERAL DESPLEGABLE DE CATEGORÍAS -->
+    <aside id="sidebar-menu" class="sidebar-menu">
+        <div class="sidebar-header">
+            <h3>Categorías</h3>
+            <button class="btn-close-menu" onclick="toggleMenuLateral(false)">&times;</button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <button class="btn-sidebar-cat active" onclick="filtrarCategoriaMain('todos', this)">Todos los Productos</button>
+            <button class="btn-sidebar-cat" onclick="filtrarCategoriaMain('rostro', this)">Rostro</button>
+            <button class="btn-sidebar-cat" onclick="filtrarCategoriaMain('labios', this)">Labios</button>
+            <button class="btn-sidebar-cat" onclick="filtrarCategoriaMain('cejas', this)">Cejas</button>
+            <button class="btn-sidebar-cat" onclick="filtrarCategoriaMain('accesorios', this)">Accesorios</button>
+            <button class="btn-sidebar-cat" onclick="filtrarCategoriaMain('ojos', this)">Ojos</button>
+            <button class="btn-sidebar-cat" onclick="filtrarCategoriaMain('capilar', this)">Capilar</button>
+            <button class="btn-sidebar-cat" onclick="filtrarCategoriaMain('skincare', this)">Skincare</button>
+        </nav>
+    </aside>
+
+    <!-- HEADER CON LOGO Y TÍTULO -->
     <header class="header">
         <div class="logo-container">
             <img src="img/IMG_0803.jpeg" alt="Eva Store Logo" class="brand-logo" id="logo-img">
@@ -52,20 +79,9 @@
 
     <!-- Catálogo de Productos -->
     <div class="catalog-wrapper">
-        
-        <!-- Barra de Navegación de Categorías -->
-        <nav class="filter-controls" id="filter-buttons">
-            <button class="filter-btn active" data-category="todos">Todos</button>
-            <button class="filter-btn" data-category="rostro">Rostro</button>
-            <button class="filter-btn" data-category="labios">Labios</button>
-            <button class="filter-btn" data-category="cejas">Cejas</button>
-            <button class="filter-btn" data-category="ojos">Ojos</button>
-            <button class="filter-btn" data-category="skincare">Skincare</button>
-        </nav>
-
         <!-- Grilla de Productos (se llena dinámicamente con JS) -->
         <main class="catalog-grid" id="catalog-grid">
-            <!-- Los productos aparecerán aquí automáticamente -->
+            <!-- Los productos aparecerán aquí automáticamente desde Firebase -->
         </main>
     </div>
 
@@ -118,7 +134,7 @@
         <p class="footer-sub">Transformando tu rutina diaria en un ritual de belleza.</p>
     </footer>
 
-    <!-- Archivo de lógica de la tienda (Módulo ES con Firebase v10) -->
+    <!-- Archivo de lógica de la tienda -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
