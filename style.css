@@ -1160,3 +1160,60 @@ input[name="category-filter"] {
   }
 
 }
+/* =========================================================
+   PARRILLA DE 2 COLUMNAS Y TARJETAS PEQUEÑAS (MÓVILES)
+   ========================================================= */
+@media (max-width: 768px) {
+
+  /* 1. Muestra 2 productos por fila en pantallas de celular */
+  #catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important; 
+    gap: 10px !important; /* Espacio reducido entre tarjetas */
+    padding: 10px 5px !important;
+  }
+
+  /* 2. Compacta los bordes y espaciados internos de cada tarjeta */
+  .product-card {
+    border-radius: 12px !important;
+    padding: 8px !important;
+  }
+
+  /* 3. Ajusta la tipografía de títulos y descripciones para la tarjeta pequeña */
+  .product-title {
+    font-size: 0.85rem !important;
+    line-height: 1.2 !important;
+    margin: 4px 0 !important;
+  }
+
+  .product-description {
+    font-size: 0.72rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 6px !important;
+    /* Opcional: limita a 2 líneas para mantener uniformidad */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 4. Compacta los selectores de tono y precios */
+  .shade-select-box {
+    margin-bottom: 6px !important;
+  }
+
+  .shade-dropdown {
+    padding: 4px 6px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .price-container {
+    font-size: 0.9rem !important;
+  }
+
+  /* 5. Botón de agregar más compacto */
+  .btn-card-add {
+    padding: 6px 8px !important;
+    font-size: 0.75rem !important;
+  }
+}
