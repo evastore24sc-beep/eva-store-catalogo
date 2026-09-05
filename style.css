@@ -1308,3 +1308,170 @@ input[name="category-filter"] {
     justify-content: center;
   }
 }
+/* =========================================================
+   BOTÓN Y DESPLEGABLE COMPACTO DE DESCRIPCIÓN
+   ========================================================= */
+
+/* Contenedor del desplegable */
+.product-details-toggle {
+  margin: 4px 0 8px 0;
+}
+
+/* Botón pequeño "Ver detalles" */
+.btn-toggle-desc {
+  font-size: 0.72rem;
+  color: #a876c5; /* Tono lila de Eva Store */
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none; /* Oculta la flecha por defecto del navegador */
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+/* Quita el triángulo por defecto en Safari/iOS */
+.btn-toggle-desc::-webkit-details-marker {
+  display: none;
+}
+
+.btn-toggle-desc:hover {
+  color: #7b429e;
+}
+
+/* Texto desplegado */
+.product-details-toggle[open] .btn-toggle-desc {
+  margin-bottom: 4px;
+  color: #7b429e;
+}
+
+.product-details-toggle .product-description {
+  font-size: 0.73rem !important;
+  line-height: 1.25 !important;
+  color: #555;
+  background-color: #faf6fc; /* Fondo sutil lila claro */
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin: 2px 0 0 0 !important;
+  border-left: 2px solid #a876c5;
+}
+/* =========================================================
+   PARRILLA MÓVIL: TARJETAS CUADRADAS Y COMPACTAS
+   ========================================================= */
+@media (max-width: 768px) {
+
+  /* Contenedor principal de 2 columnas */
+  #catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+
+  /* Estructura general de la tarjeta */
+  .product-card {
+    border-radius: 10px !important;
+    padding: 6px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* 1. Imagen Cuadrada Adaptable */
+  .product-image {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Forzar proporción totalmente cuadrada */
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen sin deformarla */
+  }
+
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  /* 2. Categoría */
+  .category-tag {
+    font-size: 0.62rem !important;
+    margin-bottom: 2px !important;
+    display: block;
+  }
+
+  /* 3. Título corto y limpio */
+  .product-title {
+    font-size: 0.8rem !important;
+    line-height: 1.15 !important;
+    margin: 2px 0 4px 0 !important;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Máximo 2 líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 4. Botón Ver Detalles */
+  .product-details-toggle {
+    margin: 2px 0 4px 0 !important;
+  }
+
+  .btn-toggle-desc {
+    font-size: 0.68rem !important;
+    padding: 0 !important;
+  }
+
+  /* 5. Selección de Tono (Solo "Tono:") */
+  .shade-select-box {
+    margin: 2px 0 6px 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .shade-label {
+    font-size: 0.68rem !important;
+    margin-bottom: 0 !important;
+    font-weight: 600;
+  }
+
+  .shade-dropdown {
+    padding: 2px 4px !important;
+    font-size: 0.7rem !important;
+    height: 24px;
+    border-radius: 4px !important;
+  }
+
+  /* 6. Footer (Precio + Botón Agregar) */
+  .product-footer {
+    display: flex;
+    flex-direction: row; /* Coloca precio y botón en la misma línea */
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px !important;
+    margin-top: 4px !important;
+    padding-top: 4px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .price-container {
+    font-size: 0.85rem !important;
+    font-weight: 700;
+  }
+
+  .btn-card-add {
+    padding: 4px 6px !important;
+    font-size: 0.7rem !important;
+    border-radius: 6px !important;
+    width: auto !important;
+  }
+}

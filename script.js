@@ -71,7 +71,7 @@ function generarCardHTML(prod) {
         const options = prod.tonos.map(t => `<option value="${t}">${t}</option>`).join('');
         selectTonosHTML = `
             <div class="shade-select-box">
-                <label for="select-${prod.id}" class="shade-label">Selecciona tu tono:</label>
+                <label for="select-${prod.id}" class="shade-label">Tono:</label>
                 <select id="select-${prod.id}" class="shade-dropdown">
                     ${options}
                 </select>
@@ -85,6 +85,17 @@ function generarCardHTML(prod) {
         badgeHTML = `<span class="badge ${badgeClass}">${prod.badgeText || prod.badge}</span>`;
     }
 
+    // Botón desplegable para la descripción
+    let descripcionHTML = "";
+    if (prod.descripcion && prod.descripcion.trim() !== "") {
+        descripcionHTML = `
+            <details class="product-details-toggle">
+                <summary class="btn-toggle-desc">Ver detalles</summary>
+                <p class="product-description">${prod.descripcion}</p>
+            </details>
+        `;
+    }
+
     const card = document.createElement("article");
     card.className = "product-card";
     card.setAttribute("data-id", prod.id);
@@ -92,13 +103,12 @@ function generarCardHTML(prod) {
         ${badgeHTML}
         <div class="product-image">
             <img src="${prod.imagen}" alt="${prod.nombre}" loading="lazy">
-            <div class="image-overlay"></div>
         </div>
         <div class="product-info">
             <span class="category-tag">${prod.categoria}</span>
             <h3 class="product-title">${prod.nombre}</h3>
-            <p class="product-description">${prod.descripcion || ""}</p>
 
+            ${descripcionHTML}
             ${selectTonosHTML}
 
             <div class="product-footer">
@@ -199,11 +209,10 @@ function filtrarCategoriaMain(categoria, btnElement) {
     aplicarFiltrosCatalogo();
     toggleMenuLateral(false);
 
-    // 🚀 DESPLAZAMIENTO HASTA EL BUSCADOR (CON MAYOR MARGEN SUPERIOR)
+    // Desplazamiento fino hasta el buscador
     const searchContainer = document.querySelector(".search-container") || document.getElementById("search-input");
     
     if (searchContainer) {
-        // Aumentamos el offset a 160px para que suba más la página y el buscador quede bien arriba
         const offset = 190; 
         const bodyRect = document.body.getBoundingClientRect().top;
         const elementRect = searchContainer.getBoundingClientRect().top;
@@ -211,11 +220,10 @@ function filtrarCategoriaMain(categoria, btnElement) {
         const offsetPosition = elementPosition - offset;
 
         window.scrollTo({
-            top: offsetPosition < 0 ? 0 : offsetPosition, // Evita valores negativos
+            top: offsetPosition < 0 ? 0 : offsetPosition,
             behavior: "smooth"
         });
     } else {
-        // Respaldo: Inicio absoluto de la página
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 }
@@ -358,7 +366,7 @@ window.limpiarBuscador = limpiarBuscador;
 window.toggleMenuLateral = toggleMenuLateral;
 window.filtrarCategoriaMain = filtrarCategoriaMain;
 
-// Carga inicial
+// Carga inicial al cargar el DOM
 document.addEventListener("DOMContentLoaded", () => {
     obtenerProductosFirestore();
 });
