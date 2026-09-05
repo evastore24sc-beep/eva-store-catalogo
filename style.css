@@ -1149,13 +1149,13 @@ input[name="category-filter"] {
   
   /* Posición ajustada solo en Celulares */
   .btn-menu-toggle {
-    top: 55px;   /* Bajar más el botón en pantallas pequeñas */
+    top: 09px;   /* Bajar más el botón en pantallas pequeñas */
     left: 15px;  /* Puedes cambiar 'left' por 'right' o ajustar los píxeles */
   }
 
   /* Ajuste opcional para el Carrito en Celulares */
   .cart-floating-btn {
-    top: 55px;   /* Alineado con el botón de categorías en celular */
+    top: 09px;   /* Alineado con el botón de categorías en celular */
     right: 15px;
   }
 
