@@ -76,15 +76,14 @@ body {
 .logo-container {
     display: flex;
     align-items: center;
-    gap: 15px; /* Espacio entre el logo y el texto */
+    gap: 15px;
 }
 
-/* Estilo para el Logo de Eva Store */
 .brand-logo {
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border-radius: 50%; /* Lo hace circular */
+    border-radius: 50%;
     border: 2px solid var(--primary-light);
     box-shadow: 0 4px 12px rgba(201, 136, 96, 0.15);
     transition: var(--transition);
@@ -158,7 +157,7 @@ body {
 }
 
 /* ==========================================================
-   SISTEMA DE FILTROS EN CSS PURO (5 CATEGORÍAS)
+   SISTEMA DE FILTROS Y GRILLA
    ========================================================== */
 .catalog-wrapper {
     max-width: 1200px;
@@ -166,61 +165,6 @@ body {
     padding: 1rem 1.5rem 4rem;
 }
 
-input[name="category-filter"] {
-    display: none;
-}
-
-.filter-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 2.5rem;
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    padding: 10px 22px;
-    background-color: white;
-    border: 1px solid #eee;
-    border-radius: 30px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-gray);
-    cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-}
-
-.filter-btn:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-}
-
-/* Resaltado de Pestaña Seleccionada */
-#filter-todos:checked ~ .filter-controls label[for="filter-todos"],
-#filter-rostro:checked ~ .filter-controls label[for="filter-rostro"],
-#filter-labios:checked ~ .filter-controls label[for="filter-labios"],
-#filter-cejas:checked ~ .filter-controls label[for="filter-cejas"],
-#filter-ojos:checked ~ .filter-controls label[for="filter-ojos"],
-#filter-skincare:checked ~ .filter-controls label[for="filter-skincare"] {
-    background-color: var(--dark);
-    color: white;
-    border-color: var(--dark);
-    box-shadow: 0 8px 20px rgba(18, 17, 19, 0.15);
-}
-
-/* Lógica de Ocultar/Mostrar según la Categoría sin JS */
-#filter-rostro:checked ~ .catalog-grid .product-card:not(.card-rostro),
-#filter-labios:checked ~ .catalog-grid .product-card:not(.card-labios),
-#filter-cejas:checked ~ .catalog-grid .product-card:not(.card-cejas),
-#filter-ojos:checked ~ .catalog-grid .product-card:not(.card-ojos),
-#filter-skincare:checked ~ .catalog-grid .product-card:not(.card-skincare) {
-    display: none;
-}
-
-/* ==========================================================
-   GRILLA Y TARJETAS DINÁMICAS
-   ========================================================== */
 .catalog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -270,7 +214,7 @@ input[name="category-filter"] {
     box-shadow: 0 4px 12px rgba(217, 78, 103, 0.4);
 }
 
-/* Imagen con Zoom Ajustada */
+/* Imagen con Zoom */
 .product-image {
     position: relative !important;
     width: 100% !important;
@@ -290,18 +234,6 @@ input[name="category-filter"] {
 
 .product-card:hover .product-image img {
     transform: scale(1.08);
-}
-
-.image-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(18, 17, 19, 0.2) 0%, transparent 50%);
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.product-card:hover .image-overlay {
-    opacity: 1;
 }
 
 /* Información */
@@ -328,13 +260,6 @@ input[name="category-filter"] {
     line-height: 1.2;
     margin-bottom: 0.6rem;
     color: var(--dark);
-}
-
-.product-description {
-    font-size: 0.82rem;
-    color: var(--text-gray);
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
 }
 
 /* Footer Tarjeta */
@@ -364,38 +289,25 @@ input[name="category-filter"] {
     font-size: 1.35rem;
 }
 
-/* Botón Pedir */
-.btn-card-ws {
+.btn-card-add {
     background-color: var(--dark);
     color: white;
-    text-decoration: none;
+    border: none;
     padding: 8px 18px;
     border-radius: 30px;
     font-size: 0.8rem;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    cursor: pointer;
     transition: var(--transition);
 }
 
-.btn-icon {
-    width: 14px;
-    height: 14px;
-    transition: transform 0.3s ease;
+.btn-card-add:hover {
+    background-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(201, 136, 96, 0.3);
 }
 
-.btn-card-ws:hover {
-    background-color: var(--whatsapp);
-    box-shadow: 0 6px 18px var(--whatsapp-glow);
-}
-
-.btn-card-ws:hover .btn-icon {
-    transform: translateX(4px);
-}
-
- /* ==========================================================
-   ESTILOS PARA EL DESPLEGABLE DE TONOS (SELECCIÓN GRIS OSCURO)
+/* ==========================================================
+   DESPLEGABLE DE TONOS
    ========================================================== */
 .shade-select-box {
     margin: 0.8rem 0 1.2rem;
@@ -428,8 +340,6 @@ input[name="category-filter"] {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    
-    /* Flecha personalizada */
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23121113' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 14px center;
@@ -443,24 +353,14 @@ input[name="category-filter"] {
     box-shadow: 0 4px 15px rgba(18, 17, 19, 0.1);
 }
 
-/* Estilo unificado para todas las opciones sin degradados ni dobles tonos */
 .shade-dropdown option {
     background-color: #ffffff;
     color: #121113;
     padding: 10px;
 }
 
-/* Forzar un solo tono gris claro/oscuro al seleccionar */
-.shade-dropdown option:hover,
-.shade-dropdown option:focus,
-.shade-dropdown option:active,
-.shade-dropdown option:checked {
-    background-color: #333033 !important; /* Gris oscuro uniforme */
-    color: #ffffff !important;            /* Texto blanco uniforme */
-}
-
 /* ==========================================================
-   BOTÓN FLOTANTE WHATSAPP CON PULSACIÓN DING
+   BOTÓN FLOTANTE WHATSAPP
    ========================================================== */
 .whatsapp-float-pulse {
     position: fixed;
@@ -528,63 +428,12 @@ input[name="category-filter"] {
 }
 
 /* ==========================================================
-   FOOTER
+   CARRITO DE COMPRAS Y MODAL
    ========================================================== */
-.footer {
-    text-align: center;
-    padding: 2.5rem 1rem;
-    background: white;
-    border-top: 1px solid #f4f0ec;
-    font-size: 0.85rem;
-    color: var(--text-gray);
-}
-
-.footer-sub {
-    font-size: 0.75rem;
-    margin-top: 4px;
-    color: #a09a9d;
-    font-style: italic;
-}
-
-/* KEYFRAMES ENTRADA */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ==========================================================
-   ADAPTABILIDAD MÓVIL
-   ========================================================== */
-@media (max-width: 600px) {
-    .brand-title { font-size: 1.8rem; }
-    .hero-banner h2 { font-size: 2.1rem; }
-    .catalog-grid { grid-template-columns: 1fr; }
-    .filter-btn { padding: 8px 16px; font-size: 0.78rem; }
-    .whatsapp-float-pulse { bottom: 20px; right: 20px; width: 56px; height: 56px; }
-    .whatsapp-icon { width: 28px; height: 28px; }
-}
-
-/* Estado activo del botón de filtro mediante JavaScript */
-.filter-btn.active {
-    background-color: var(--dark) !important;
-    color: white !important;
-    border-color: var(--dark) !important;
-    box-shadow: 0 8px 20px rgba(18, 17, 19, 0.15);
-}
-/* ==========================================================
-   ESTILOS DEL CARRITO DE COMPRAS Y MODAL
-   ========================================================== */
-
-/* Botón flotante del carrito */
 .cart-toggle-btn {
     position: fixed;
-    top: 09px;
-    right: 25px;
+    top: 15px;
+    right: 15px;
     background-color: var(--dark);
     color: white;
     border: none;
@@ -622,7 +471,6 @@ input[name="category-filter"] {
     border: 2px solid white;
 }
 
-/* Modal del Carrito */
 .cart-modal {
     position: fixed;
     inset: 0;
@@ -795,25 +643,8 @@ input[name="category-filter"] {
     box-shadow: 0 8px 25px var(--whatsapp-glow);
 }
 
-/* Ajuste del botón Agregar en las tarjetas */
-.btn-card-add {
-    background-color: var(--dark);
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 30px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.btn-card-add:hover {
-    background-color: var(--primary);
-    box-shadow: 0 4px 12px rgba(201, 136, 96, 0.3);
-}
 /* ==========================================================
-   ESTILOS DEL BUSCADOR DE PRODUCTOS
+   BUSCADOR DE PRODUCTOS
    ========================================================== */
 .search-container {
     max-width: 500px;
@@ -868,618 +699,226 @@ input[name="category-filter"] {
 .clear-search-btn:hover {
     color: var(--dark);
 }
-/* Botón de apertura en la esquina superior izquierda */
-.btn-menu-toggle {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 1000;
-  background-color: #28a745;
-  color: #ffffff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
 
-.btn-menu-toggle:hover {
-  background-color: #218838;
-  transform: scale(1.03);
-}
-
-/* Fondo oscuro translúcido */
-.menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1050;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Estructura del Panel Lateral */
-.sidebar-menu {
-  position: fixed;
-  top: 0;
-  left: -280px; /* Escondido por defecto */
-  width: 280px;
-  height: 100%;
-  background-color: #ffffff;
-  z-index: 1100;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-menu.active {
-  left: 0; /* Deslizar hacia adentro */
-}
-
-.sidebar-header {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-}
-
-.sidebar-header h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #333;
-}
-
-.btn-close-menu {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  line-height: 1;
-  cursor: pointer;
-  color: #888;
-}
-
-/* Lista de Categorías */
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-  gap: 8px;
-  overflow-y: auto;
-}
-
-.btn-sidebar-cat {
-  width: 100%;
-  text-align: left;
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-sidebar-cat:hover, .btn-sidebar-cat.active {
-  background-color: #28a745;
-  color: #ffffff;
-  border-color: #28a745;
-  font-weight: bold;
-}
 /* =========================================================
-   ESTILOS DOCK / MENÚ LATERAL Y BOTÓN CATEGORÍAS (LILA)
+   MENÚ LATERAL DE CATEGORÍAS (LILA)
    ========================================================= */
-
-/* Botón flotante para abrir el menú (Lila) */
 .btn-menu-toggle {
-  position: fixed;
-  top: 09px;
-  left: 15px;
-  z-index: 1000;
-  background-color: #a876c5; /* Color Lila Principal */
-  color: #ffffff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 25px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(168, 118, 197, 0.35);
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    background-color: #a876c5;
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(168, 118, 197, 0.35);
+    transition: all 0.3s ease;
 }
 
 .btn-menu-toggle:hover {
-  background-color: #9258b3; /* Lila un poco más oscuro al pasar el cursor */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(168, 118, 197, 0.45);
+    background-color: #9258b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(168, 118, 197, 0.45);
 }
 
-/* Fondo oscuro al abrir el panel */
 .menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
-  z-index: 1050;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
+    opacity: 1;
+    visibility: visible;
 }
 
-/* Panel Lateral */
 .sidebar-menu {
-  position: fixed;
-  top: 0;
-  left: -290px;
-  width: 290px;
-  height: 100%;
-  background-color: #ffffff;
-  z-index: 1100;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: -290px;
+    width: 290px;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 1100;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar-menu.active {
-  left: 0;
+    left: 0;
 }
 
 .sidebar-header {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #f0e6f5;
-  background-color: #fcf8ff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0e6f5;
+    background-color: #fcf8ff;
 }
 
 .sidebar-header h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #5c3575; /* Título en morado/lila oscuro */
-  font-weight: 700;
+    margin: 0;
+    font-size: 1.2rem;
+    color: #5c3575;
+    font-weight: 700;
 }
 
 .btn-close-menu {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  line-height: 1;
-  cursor: pointer;
-  color: #a876c5;
-  transition: color 0.2s ease;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #a876c5;
+    transition: color 0.2s ease;
 }
 
 .btn-close-menu:hover {
-  color: #7b429e;
+    color: #7b429e;
 }
 
-/* Navegación y Botones de Categorías */
 .sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  padding: 18px 15px;
-  gap: 10px;
-  overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 15px;
+    gap: 10px;
+    overflow-y: auto;
 }
 
 .btn-sidebar-cat {
-  width: 100%;
-  text-align: left;
-  padding: 12px 18px;
-  background-color: #fbf7fd;
-  border: 1px solid #f0e1f7;
-  color: #555;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.25s ease;
+    width: 100%;
+    text-align: left;
+    padding: 12px 18px;
+    background-color: #fbf7fd;
+    border: 1px solid #f0e1f7;
+    color: #555;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
 }
 
-/* Efecto Hover y Selección en Lila */
 .btn-sidebar-cat:hover {
-  background-color: #f3e8f8;
-  color: #7b429e;
-  border-color: #d8b4e8;
-  transform: translateX(4px);
+    background-color: #f3e8f8;
+    color: #7b429e;
+    border-color: #d8b4e8;
+    transform: translateX(4px);
 }
 
 .btn-sidebar-cat.active {
-  background-color: #a876c5; /* Fondo lila seleccionado */
-  color: #ffffff;             /* Texto blanco */
-  border-color: #a876c5;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(168, 118, 197, 0.3);
-}
-/* =========================================================
-   ESTILOS BASE (Para computadoras, laptops y tablets)
-   ========================================================= */
-
-/* Posición original en Computadoras */
-.btn-menu-toggle {
-  position: fixed;
-  top: 15px; /* Altura original en PC */
-  left: 15px; /* Lado original en PC */
-  z-index: 1000;
-  background-color: #a876c5;
-  color: #ffffff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 25px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(168, 118, 197, 0.35);
-  transition: all 0.3s ease;
-}
-
-/* Posición del Carrito en PC */
-.cart-floating-btn {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 1000;
-}
-
-
-/* =========================================================
-   ESTILOS EXCLUSIVOS PARA TELÉFONOS (Móviles)
-   ========================================================= */
-@media (max-width: 768px) {
-  
-  /* Posición ajustada solo en Celulares */
-  .btn-menu-toggle {
-    top: 09px;   /* Bajar más el botón en pantallas pequeñas */
-    left: 15px;  /* Puedes cambiar 'left' por 'right' o ajustar los píxeles */
-  }
-
-  /* Ajuste opcional para el Carrito en Celulares */
-  .cart-floating-btn {
-    top: 09px;   /* Alineado con el botón de categorías en celular */
-    right: 15px;
-  }
-
-}
-/* =========================================================
-   PARRILLA DE 2 COLUMNAS Y TARJETAS PEQUEÑAS (MÓVILES)
-   ========================================================= */
-@media (max-width: 768px) {
-
-  /* 1. Muestra 2 productos por fila en pantallas de celular */
-  #catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr) !important; 
-    gap: 10px !important; /* Espacio reducido entre tarjetas */
-    padding: 10px 5px !important;
-  }
-
-  /* 2. Compacta los bordes y espaciados internos de cada tarjeta */
-  .product-card {
-    border-radius: 12px !important;
-    padding: 8px !important;
-  }
-
-  /* 3. Ajusta la tipografía de títulos y descripciones para la tarjeta pequeña */
-  .product-title {
-    font-size: 0.85rem !important;
-    line-height: 1.2 !important;
-    margin: 4px 0 !important;
-  }
-
-  .product-description {
-    font-size: 0.72rem !important;
-    line-height: 1.1 !important;
-    margin-bottom: 6px !important;
-    /* Opcional: limita a 2 líneas para mantener uniformidad */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* 4. Compacta los selectores de tono y precios */
-  .shade-select-box {
-    margin-bottom: 6px !important;
-  }
-
-  .shade-dropdown {
-    padding: 4px 6px !important;
-    font-size: 0.75rem !important;
-  }
-
-  .price-container {
-    font-size: 0.9rem !important;
-  }
-
-  /* 5. Botón de agregar más compacto */
-  .btn-card-add {
-    padding: 6px 8px !important;
-    font-size: 0.75rem !important;
-  }
-}
-/* =========================================================
-   PARRILLA DE 2 COLUMNAS Y TARJETAS ESPACIOSAS (MÓVILES)
-   ========================================================= */
-@media (max-width: 768px) {
-
-  /* 1. Contenedor del catálogo con espacio lateral cómodo */
-  #catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr) !important; 
-    gap: 12px !important; /* Espacio equilibrado entre tarjetas */
-    padding: 12px 10px !important;
-  }
-
-  /* 2. Tarjeta con estructura flexible para separar elementos */
-  .product-card {
-    border-radius: 14px !important;
-    padding: 10px !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  /* 3. Etiqueta de Categoría */
-  .category-tag {
-    font-size: 0.68rem !important;
-    margin-bottom: 4px !important;
-    display: inline-block;
-  }
-
-  /* 4. Título del Producto (Separado y legible) */
-  .product-title {
-    font-size: 0.88rem !important;
-    line-height: 1.3 !important;
-    margin: 4px 0 6px 0 !important;
+    background-color: #a876c5;
+    color: #ffffff;
+    border-color: #a876c5;
     font-weight: 600;
-  }
-
-  /* 5. Descripción del Producto (Límite de 2 líneas con margen inferior) */
-  .product-description {
-    font-size: 0.75rem !important;
-    line-height: 1.3 !important;
-    color: #666;
-    margin-bottom: 10px !important; /* Espacio extra antes del tono o precio */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* 6. Selector de Tono (si aplica) */
-  .shade-select-box {
-    margin-bottom: 10px !important;
-  }
-
-  .shade-label {
-    font-size: 0.7rem !important;
-    margin-bottom: 3px !important;
-  }
-
-  .shade-dropdown {
-    padding: 5px 8px !important;
-    font-size: 0.75rem !important;
-    border-radius: 8px !important;
-  }
-
-  /* 7. Footer de la tarjeta (Precio + Botón con más separación) */
-  .product-footer {
-    display: flex;
-    flex-direction: column; /* Apila precio y botón verticalmente para mayor comodidad */
-    align-items: stretch !important;
-    gap: 8px !important;
-    margin-top: auto; /* Empuja el footer hacia la parte inferior */
-    padding-top: 6px;
-  }
-
-  .price-container {
-    font-size: 0.95rem !important;
-    font-weight: 700;
-    text-align: center;
-  }
-
-  /* 8. Botón Agregar con tamaño táctil adecuado */
-  .btn-card-add {
-    width: 100% !important;
-    padding: 8px 10px !important;
-    font-size: 0.8rem !important;
-    border-radius: 8px !important;
-    text-align: center;
-    justify-content: center;
-  }
+    box-shadow: 0 4px 10px rgba(168, 118, 197, 0.3);
 }
+
 /* =========================================================
-   BOTÓN Y DESPLEGABLE COMPACTO DE DESCRIPCIÓN
+   FOOTER Y ANIMACIONES
    ========================================================= */
-
-/* Contenedor del desplegable */
-.product-details-toggle {
-  margin: 4px 0 8px 0;
+.footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background: white;
+    border-top: 1px solid #f4f0ec;
+    font-size: 0.85rem;
+    color: var(--text-gray);
 }
 
-/* Botón pequeño "Ver detalles" */
+.footer-sub {
+    font-size: 0.75rem;
+    margin-top: 4px;
+    color: #a09a9d;
+    font-style: italic;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   BOTÓN Y PANEL AMPLIO DE DESCRIPCIÓN DETALLADA
+   ========================================================= */
+.product-details-toggle {
+  margin: 6px 0 10px 0;
+}
+
 .btn-toggle-desc {
-  font-size: 0.72rem;
-  color: #a876c5; /* Tono lila de Eva Store */
-  font-weight: 600;
+  font-size: 0.8rem !important;
+  color: var(--dark) !important; /* Negro visible */
+  font-weight: 700 !important;
   cursor: pointer;
-  list-style: none; /* Oculta la flecha por defecto del navegador */
+  list-style: none;
   outline: none;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   user-select: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Quita el triángulo por defecto en Safari/iOS */
 .btn-toggle-desc::-webkit-details-marker {
   display: none;
 }
 
 .btn-toggle-desc:hover {
-  color: #7b429e;
+  color: var(--primary) !important;
 }
 
-/* Texto desplegado */
 .product-details-toggle[open] .btn-toggle-desc {
-  margin-bottom: 4px;
-  color: #7b429e;
+  margin-bottom: 6px;
 }
 
 .product-details-toggle .product-description {
-  font-size: 0.73rem !important;
-  line-height: 1.25 !important;
-  color: #555;
-  background-color: #faf6fc; /* Fondo sutil lila claro */
-  padding: 6px 8px;
-  border-radius: 6px;
-  margin: 2px 0 0 0 !important;
-  border-left: 2px solid #a876c5;
+  font-size: 0.82rem !important;
+  line-height: 1.45 !important;
+  color: #333333 !important;
+  background-color: #faf6fc !important;
+  padding: 10px 12px !important;
+  border-radius: 8px !important;
+  margin: 4px 0 0 0 !important;
+  border-left: 3px solid #a876c5 !important;
+  max-height: 220px;
+  overflow-y: auto;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
 }
+
 /* =========================================================
-   PARRILLA MÓVIL: TARJETAS CUADRADAS Y COMPACTAS
+   DISEÑO MÓVIL: 1 PRODUCTO POR FILA (TARJETAS COMPLETAS)
    ========================================================= */
 @media (max-width: 768px) {
 
-  /* Contenedor principal de 2 columnas */
-  #catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-    padding: 8px !important;
+  .btn-menu-toggle,
+  .cart-toggle-btn {
+    top: 9px;
   }
 
-  /* Estructura general de la tarjeta */
-  .product-card {
-    border-radius: 10px !important;
-    padding: 6px !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+  .brand-title { font-size: 1.8rem; }
+  .hero-banner h2 { font-size: 2.1rem; }
 
-  /* 1. Imagen Cuadrada Adaptable */
-  .product-image {
-    width: 100%;
-    aspect-ratio: 1 / 1; /* Forzar proporción totalmente cuadrada */
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 4px;
-  }
-
-  .product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ajusta la imagen sin deformarla */
-  }
-
-  .product-info {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: space-between;
-  }
-
-  /* 2. Categoría */
-  .category-tag {
-    font-size: 0.62rem !important;
-    margin-bottom: 2px !important;
-    display: block;
-  }
-
-  /* 3. Título corto y limpio */
-  .product-title {
-    font-size: 0.8rem !important;
-    line-height: 1.15 !important;
-    margin: 2px 0 4px 0 !important;
-    font-weight: 600;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Máximo 2 líneas */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* 4. Botón Ver Detalles */
-  .product-details-toggle {
-    margin: 2px 0 4px 0 !important;
-  }
-
-  .btn-toggle-desc {
-    font-size: 0.68rem !important;
-    padding: 0 !important;
-  }
-
-  /* 5. Selección de Tono (Solo "Tono:") */
-  .shade-select-box {
-    margin: 2px 0 6px 0 !important;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .shade-label {
-    font-size: 0.68rem !important;
-    margin-bottom: 0 !important;
-    font-weight: 600;
-  }
-
-  .shade-dropdown {
-    padding: 2px 4px !important;
-    font-size: 0.7rem !important;
-    height: 24px;
-    border-radius: 4px !important;
-  }
-
-  /* 6. Footer (Precio + Botón Agregar) */
-  .product-footer {
-    display: flex;
-    flex-direction: row; /* Coloca precio y botón en la misma línea */
-    align-items: center;
-    justify-content: space-between;
-    gap: 4px !important;
-    margin-top: 4px !important;
-    padding-top: 4px;
-    border-top: 1px solid #f0f0f0;
-  }
-
-  .price-container {
-    font-size: 0.85rem !important;
-    font-weight: 700;
-  }
-
-  .btn-card-add {
-    padding: 4px 6px !important;
-    font-size: 0.7rem !important;
-    border-radius: 6px !important;
-    width: auto !important;
-  }
-}/* =========================================================
-   DISEÑO MÓVIL: 1 PRODUCTO POR FILA (VISTA AMPLIA)
-   ========================================================= */
-@media (max-width: 768px) {
-
-  /* 1. Muestra 1 tarjeta a la vez centrada */
   #catalog-grid {
     display: grid;
     grid-template-columns: 1fr !important;
@@ -1489,28 +928,26 @@ input[name="category-filter"] {
     margin: 0 auto;
   }
 
-  /* 2. Tarjeta espaciosa y limpia */
   .product-card {
     border-radius: 14px !important;
     padding: 12px !important;
   }
 
-  /* 3. Imagen grande con esquinas redondeadas */
   .product-image {
-    width: 100%;
+    width: 100% !important;
+    height: auto !important;
+    max-height: 320px;
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 8px;
   }
 
   .product-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
   }
 
-  /* 4. Textos con tamaño legible */
   .category-tag {
     font-size: 0.75rem !important;
     margin-bottom: 4px !important;
@@ -1521,15 +958,6 @@ input[name="category-filter"] {
     line-height: 1.3 !important;
     margin: 4px 0 8px 0 !important;
     font-weight: 600;
-  }
-
-  /* 5. Desplegable de detalles y selección de tono */
-  .product-details-toggle {
-    margin: 4px 0 10px 0 !important;
-  }
-
-  .btn-toggle-desc {
-    font-size: 0.78rem !important;
   }
 
   .shade-select-box {
@@ -1546,7 +974,6 @@ input[name="category-filter"] {
     height: auto !important;
   }
 
-  /* 6. Pie de tarjeta con precio claro y botón grande */
   .product-footer {
     display: flex;
     flex-direction: row;
@@ -1563,9 +990,21 @@ input[name="category-filter"] {
   }
 
   .btn-card-add {
+    width: auto !important;
     padding: 8px 14px !important;
     font-size: 0.82rem !important;
     border-radius: 8px !important;
-    width: auto !important;
+  }
+
+  .whatsapp-float-pulse { 
+    bottom: 20px; 
+    right: 20px; 
+    width: 56px; 
+    height: 56px; 
+  }
+  
+  .whatsapp-icon { 
+    width: 28px; 
+    height: 28px; 
   }
 }
