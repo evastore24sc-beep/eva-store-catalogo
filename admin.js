@@ -1,5 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged, 
+    signOut 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
     getFirestore, 
     collection, 
     addDoc, 
@@ -21,16 +27,58 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 let listaProductos = [];
+let categoriaActivaAdmin = "todos";
 
 // Elementos DOM
+const loginSection = document.getElementById("login-section");
+const adminContent = document.getElementById("admin-content");
+const loginForm = document.getElementById("loginForm");
+
 const form = document.getElementById("productForm");
 const tablaProductos = document.getElementById("tabla-productos");
 const formTitle = document.getElementById("form-title");
 const btnSave = document.getElementById("btnSave");
 const btnCancel = document.getElementById("btnCancel");
+
+// Control de Sesión en Tiempo Real
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        if (loginSection) loginSection.style.display = "none";
+        if (adminContent) adminContent.style.display = "block";
+        cargarProductosAdmin();
+    } else {
+        if (loginSection) loginSection.style.display = "block";
+        if (adminContent) adminContent.style.display = "none";
+    }
+});
+
+// Manejo del Login
+if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            loginForm.reset();
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            alert("Credenciales incorrectas: " + error.message);
+        }
+    });
+}
+
+// Cerrar Sesión
+function cerrarSesion() {
+    signOut(auth).then(() => {
+        alert("Sesión cerrada correctamente.");
+    });
+}
 
 // Cargar inventario al iniciar
 async function cargarProductosAdmin() {
@@ -40,31 +88,33 @@ async function cargarProductosAdmin() {
         querySnapshot.forEach((documento) => {
             listaProductos.push({ id: documento.id, ...documento.data() });
         });
-        renderTablaAdmin();
+        aplicarFiltrosAdmin();
     } catch (error) {
         console.error("Error al cargar productos en el panel:", error);
-        tablaProductos.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">Error al cargar datos.</td></tr>`;
+        if (tablaProductos) {
+            tablaProductos.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">Error al cargar datos.</td></tr>`;
+        }
     }
 }
 
 // Renderizar tabla HTML
-function renderTablaAdmin() {
+function renderTablaAdmin(productosARenderizar = listaProductos) {
     if (!tablaProductos) return;
     tablaProductos.innerHTML = "";
 
-    if (listaProductos.length === 0) {
-        tablaProductos.innerHTML = `<tr><td colspan="5" style="text-align: center;">No hay productos registrados.</td></tr>`;
+    if (productosARenderizar.length === 0) {
+        tablaProductos.innerHTML = `<tr><td colspan="5" style="text-align: center;">No se encontraron productos.</td></tr>`;
         return;
     }
 
-    listaProductos.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
+    productosARenderizar.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || "", 'es', { sensitivity: 'base' }));
 
-    listaProductos.forEach((prod) => {
+    productosARenderizar.forEach((prod) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><img src="${prod.imagen}" alt="${prod.nombre}"></td>
-            <td><strong>${prod.nombre}</strong></td>
-            <td>${prod.categoria}</td>
+            <td><img src="${prod.imagen || ''}" alt="${prod.nombre || ''}"></td>
+            <td><strong>${prod.nombre || ''}</strong></td>
+            <td>${prod.categoria || ''}</td>
             <td>$${Number(prod.precio || 0).toLocaleString('es-CO')}</td>
             <td>
                 <button class="btn-edit" onclick="prepararEdicion('${prod.id}')">Editar</button>
@@ -80,29 +130,27 @@ if (form) {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const editId = document.getElementById("productId").value;
-        const tonosRaw = document.getElementById("tonos").value.trim();
+        const editId = document.getElementById("productId") ? document.getElementById("productId").value : "";
+        const tonosRaw = document.getElementById("tonos") ? document.getElementById("tonos").value.trim() : "";
         const tonosArray = tonosRaw ? tonosRaw.split(",").map(t => t.trim()).filter(t => t !== "") : [];
 
         const productoData = {
-            nombre: document.getElementById("nombre").value.trim(),
-            descripcion: document.getElementById("descripcion").value.trim(),
-            precio: parseFloat(document.getElementById("precio").value) || 0,
-            categoria: document.getElementById("categoria").value.trim().toLowerCase(),
-            imagen: document.getElementById("imagen").value.trim(),
-            badge: document.getElementById("badge").value.trim().toLowerCase(),
-            badgeText: document.getElementById("badgeText").value.trim(),
+            nombre: document.getElementById("nombre") ? document.getElementById("nombre").value.trim() : "",
+            descripcion: document.getElementById("descripcion") ? document.getElementById("descripcion").value.trim() : "",
+            precio: parseFloat(document.getElementById("precio") ? document.getElementById("precio").value : 0) || 0,
+            categoria: document.getElementById("categoria") ? document.getElementById("categoria").value.trim().toLowerCase() : "",
+            imagen: document.getElementById("imagen") ? document.getElementById("imagen").value.trim() : "",
+            badge: document.getElementById("badge") ? document.getElementById("badge").value.trim().toLowerCase() : "",
+            badgeText: document.getElementById("badgeText") ? document.getElementById("badgeText").value.trim() : "",
             tonos: tonosArray
         };
 
         try {
             if (editId) {
-                // Actualizar producto existente
                 const docRef = doc(db, "productos", editId);
                 await updateDoc(docRef, productoData);
                 alert("¡Producto actualizado exitosamente!");
             } else {
-                // Crear nuevo producto
                 await addDoc(collection(db, "productos"), productoData);
                 alert("¡Producto guardado exitosamente!");
             }
@@ -111,9 +159,41 @@ if (form) {
             cargarProductosAdmin();
         } catch (error) {
             console.error("Error al procesar el producto:", error);
-            alert("Ocurrió un error. Revisa la consola.");
+            alert("Error: " + error.message);
         }
     });
+}
+
+// LÓGICA DE BÚSQUEDA Y FILTRADO COMBINADO EN ADMIN
+function aplicarFiltrosAdmin() {
+    const searchInput = document.getElementById("admin-search-input");
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+    const resultados = listaProductos.filter(prod => {
+        const nombre = (prod.nombre || "").toLowerCase();
+        const categoria = (prod.categoria || "").toLowerCase();
+
+        const coincideTexto = nombre.includes(query) || categoria.includes(query);
+        const coincideCategoria = categoriaActivaAdmin === "todos" || categoria === categoriaActivaAdmin;
+
+        return coincideTexto && coincideCategoria;
+    });
+
+    renderTablaAdmin(resultados);
+}
+
+function filtrarProductosAdmin() {
+    aplicarFiltrosAdmin();
+}
+
+function filtrarPorCategoriaAdmin(categoria, btnElement) {
+    categoriaActivaAdmin = categoria.toLowerCase();
+
+    const botones = document.querySelectorAll("#admin-category-filters .btn-filter");
+    botones.forEach(b => b.classList.remove("active"));
+    if (btnElement) btnElement.classList.add("active");
+
+    aplicarFiltrosAdmin();
 }
 
 // Cargar datos en el formulario para editar
@@ -121,29 +201,29 @@ function prepararEdicion(id) {
     const prod = listaProductos.find(p => p.id === id);
     if (!prod) return;
 
-    document.getElementById("productId").value = prod.id;
-    document.getElementById("nombre").value = prod.nombre || "";
-    document.getElementById("descripcion").value = prod.descripcion || "";
-    document.getElementById("precio").value = prod.precio || 0;
-    document.getElementById("categoria").value = prod.categoria || "";
-    document.getElementById("imagen").value = prod.imagen || "";
-    document.getElementById("badge").value = prod.badge || "";
-    document.getElementById("badgeText").value = prod.badgeText || "";
-    document.getElementById("tonos").value = prod.tonos ? prod.tonos.join(", ") : "";
+    if (document.getElementById("productId")) document.getElementById("productId").value = prod.id;
+    if (document.getElementById("nombre")) document.getElementById("nombre").value = prod.nombre || "";
+    if (document.getElementById("descripcion")) document.getElementById("descripcion").value = prod.descripcion || "";
+    if (document.getElementById("precio")) document.getElementById("precio").value = prod.precio || 0;
+    if (document.getElementById("categoria")) document.getElementById("categoria").value = prod.categoria || "";
+    if (document.getElementById("imagen")) document.getElementById("imagen").value = prod.imagen || "";
+    if (document.getElementById("badge")) document.getElementById("badge").value = prod.badge || "";
+    if (document.getElementById("badgeText")) document.getElementById("badgeText").value = prod.badgeText || "";
+    if (document.getElementById("tonos")) document.getElementById("tonos").value = prod.tonos ? prod.tonos.join(", ") : "";
 
-    formTitle.innerText = "Editar Producto";
-    btnSave.innerText = "Actualizar Producto";
-    btnCancel.style.display = "inline-block";
+    if (formTitle) formTitle.innerText = "Editar Producto";
+    if (btnSave) btnSave.innerText = "Actualizar Producto";
+    if (btnCancel) btnCancel.style.display = "inline-block";
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Resetear formulario
 function cancelarEdicion() {
-    form.reset();
-    document.getElementById("productId").value = "";
-    formTitle.innerText = "Agregar Nuevo Producto";
-    btnSave.innerText = "Guardar Producto";
-    btnCancel.style.display = "none";
+    if (form) form.reset();
+    if (document.getElementById("productId")) document.getElementById("productId").value = "";
+    if (formTitle) formTitle.innerText = "Agregar Nuevo Producto";
+    if (btnSave) btnSave.innerText = "Guardar Producto";
+    if (btnCancel) btnCancel.style.display = "none";
 }
 
 // Eliminar producto
@@ -155,17 +235,15 @@ async function eliminarProducto(id) {
             cargarProductosAdmin();
         } catch (error) {
             console.error("Error al eliminar el producto:", error);
-            alert("Error al eliminar el producto.");
+            alert("Error al eliminar: " + error.message);
         }
     }
 }
 
-// Exponer funciones globales para interactuar con botones onclick
+// Exposición global
 window.prepararEdicion = prepararEdicion;
 window.eliminarProducto = eliminarProducto;
 window.cancelarEdicion = cancelarEdicion;
-
-// Inicialización
-document.addEventListener("DOMContentLoaded", () => {
-    cargarProductosAdmin();
-});
+window.cerrarSesion = cerrarSesion;
+window.filtrarProductosAdmin = filtrarProductosAdmin;
+window.filtrarPorCategoriaAdmin = filtrarPorCategoriaAdmin;
