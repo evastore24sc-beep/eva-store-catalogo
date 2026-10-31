@@ -345,6 +345,19 @@ function enviarPedidoWhatsApp() {
     const url = `https://wa.me/${TEL_WHATSAPP}?text=${encodeURIComponent(textoPedido)}`;
     window.open(url, "_blank");
 }
+let marcaSeleccionada = "todos";
+
+function filtrarMarca(marca, btnElement) {
+    marcaSeleccionada = marca;
+
+    // Resaltar botón seleccionado
+    const botonesMarca = document.querySelectorAll(".brand-circle-btn");
+    botonesMarca.forEach(btn => btn.classList.remove("active"));
+    if (btnElement) btnElement.classList.add("active");
+
+    // Reaplicar filtros combinados
+    aplicarFiltrosCatalogo();
+}
 
 // =========================================================
 // REGISTRO GLOBAL Y CARGA INICIAL
@@ -357,6 +370,7 @@ window.filtrarPorNombre = filtrarPorNombre;
 window.limpiarBuscador = limpiarBuscador;
 window.toggleMenuLateral = toggleMenuLateral;
 window.filtrarCategoriaMain = filtrarCategoriaMain;
+window.filtrarMarca = filtrarMarca;
 
 // Carga inicial
 document.addEventListener("DOMContentLoaded", () => {

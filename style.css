@@ -1160,3 +1160,92 @@ input[name="category-filter"] {
   }
 
 }
+/* =========================================================
+   CARRUSEL MÓVIL DE BOTONES CIRCULARES DE MARCAS
+   ========================================================= */
+.brands-filter-container {
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+  padding: 0 10px;
+}
+
+.brands-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.brands-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto; /* Permite deslizar horizontalmente en celular */
+  padding: 8px 5px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ocultar barra de desplazamiento visual */
+.brands-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.brand-circle-btn {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  flex-shrink: 0; /* Evita que se aplasten los círculos */
+}
+
+.brand-img-box {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #f0e1f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.brand-img-box img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain; /* Ajusta el logo sin deformarlo */
+  border-radius: 50%;
+}
+
+.brand-img-box span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #5c3575;
+}
+
+.brand-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--dark);
+  white-space: nowrap;
+}
+
+/* Estado Seleccionado / Activo */
+.brand-circle-btn.active .brand-img-box {
+  border-color: #a876c5;
+  box-shadow: 0 0 0 3px rgba(168, 118, 197, 0.3);
+  transform: scale(1.08);
+}
+
+.brand-circle-btn.active .brand-label {
+  color: #a876c5;
+  font-weight: 700;
+}
