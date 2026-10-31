@@ -77,71 +77,70 @@
             <button id="clear-search" class="clear-search-btn" onclick="limpiarBuscador()" style="display: none;">&times;</button>
         </div>
     </div>
+
     <!-- BANNER DE FILTRO POR MARCAS (BOTONES CIRCULARES) -->
-<div class="brands-filter-container">
-  <p class="brands-title">Encuentra por tu marca favorita ✨</p>
-  <div class="brands-scroll">
-    
-    <!-- Botón Todas -->
-    <button class="brand-circle-btn active" onclick="filtrarMarca('todos', this)">
-      <div class="brand-img-box">
-        <span>Todas</span>
+    <div class="brands-filter-container">
+      <p class="brands-title">Encuentra por tu marca favorita ✨</p>
+      <div class="brands-scroll">
+        
+        <!-- Botón Todas -->
+        <button class="brand-circle-btn active" onclick="filtrarMarca('todos', this)">
+          <div class="brand-img-box">
+            <span>Todas</span>
+          </div>
+          <span class="brand-label">Todas</span>
+        </button>
+
+        <!-- Marca: Atenea -->
+        <button class="brand-circle-btn" onclick="filtrarMarca('atenea', this)">
+          <div class="brand-img-box">
+            <img src="img/marcas/atenea.jpeg" alt="Atenea" onerror="this.src='https://via.placeholder.com/60?text=Atenea'">
+          </div>
+          <span class="brand-label">Atenea</span>
+        </button>
+
+        <!-- Marca: Dolce Bella -->
+        <button class="brand-circle-btn" onclick="filtrarMarca('dolce bella', this)">
+          <div class="brand-img-box">
+            <img src="img/marcas/dolcebella.jpeg" alt="Dolce Bella" onerror="this.src='https://via.placeholder.com/60?text=Dolce'">
+          </div>
+          <span class="brand-label">Dolce Bella</span>
+        </button>
+
+        <!-- Marca: Nailen -->
+        <button class="brand-circle-btn" onclick="filtrarMarca('nailen', this)">
+          <div class="brand-img-box">
+            <img src="img/marcas/nailen.jpeg" alt="Nailen" onerror="this.src='https://via.placeholder.com/60?text=Nailen'">
+          </div>
+          <span class="brand-label">Nailen</span>
+        </button>
+
+        <!-- Marca: Raquel -->
+        <button class="brand-circle-btn" onclick="filtrarMarca('raquel', this)">
+          <div class="brand-img-box">
+            <img src="img/marcas/raquel.jpeg" alt="Raquel" onerror="this.src='https://via.placeholder.com/60?text=Raquel'">
+          </div>
+          <span class="brand-label">Raquel</span>
+        </button>
+
+        <!-- Marca: Ruby Rose -->
+        <button class="brand-circle-btn" onclick="filtrarMarca('ruby rose', this)">
+          <div class="brand-img-box">
+            <img src="img/marcas/rubyrose.jpeg" alt="Ruby Rose" onerror="this.src='https://via.placeholder.com/60?text=Ruby'">
+          </div>
+          <span class="brand-label">Ruby Rose</span>
+        </button>
+
+        <!-- Marca: Bioaqua -->
+        <button class="brand-circle-btn" onclick="filtrarMarca('bioaqua', this)">
+          <div class="brand-img-box">
+            <img src="img/marcas/bioaqua.jpeg" alt="Bioaqua" onerror="this.src='https://via.placeholder.com/60?text=Bioaqua'">
+          </div>
+          <span class="brand-label">Bioaqua</span>
+        </button>
+
       </div>
-      <span class="brand-label">Todas</span>
-    </button>
-
-    <!-- Marca 1: Atenea -->
-    <button class="brand-circle-btn" onclick="filtrarMarca('atenea', this)">
-      <div class="brand-img-box">
-        <img src="img/marcas/atenea.jpeg" alt="Atenea" onerror="this.src='https://via.placeholder.com/60?text=Atenea'">
-      </div>
-      <span class="brand-label">Atenea</span>
-    </button>
-
-    <!-- Marca 2: Dolce Bella -->
-    <button class="brand-circle-btn" onclick="filtrarMarca('dolce bella', this)">
-      <div class="brand-img-box">
-        <img src="img/marcas/dolcebella.jpeg" alt="Dolce Bella" onerror="this.src='https://via.placeholder.com/60?text=Dolce'">
-      </div>
-      <span class="brand-label">Dolce Bella</span>
-    </button>
-
-    <!-- Marca 3: Nailen -->
-    <button class="brand-circle-btn" onclick="filtrarMarca('nailen', this)">
-      <div class="brand-img-box">
-        <img src="img/marcas/nailen.jpeg" alt="Nailen" onerror="this.src='https://via.placeholder.com/60?text=Nailen'">
-      </div>
-      <span class="brand-label">Nailen</span>
-    </button>
-
-    <!-- Marca 4: Raquel -->
-    <button class="brand-circle-btn" onclick="filtrarMarca('nailen', this)">
-      <div class="brand-img-box">
-        <img src="img/marcas/raquel.jpeg" alt="Nailen" onerror="this.src='https://via.placeholder.com/60?text=Nailen'">
-      </div>
-      <span class="brand-label">Nailen</span>
-    </button>
-
-    <!-- Marca 5: Ruby Rose -->
-    <button class="brand-circle-btn" onclick="filtrarMarca('nailen', this)">
-      <div class="brand-img-box">
-        <img src="img/marcas/rubyrose.jpeg" alt="Nailen" onerror="this.src='https://via.placeholder.com/60?text=Nailen'">
-      </div>
-      <span class="brand-label">Nailen</span>
-    </button>
-
-    <!-- Marca 6: Bioaqua -->
-    <button class="brand-circle-btn" onclick="filtrarMarca('nailen', this)">
-      <div class="brand-img-box">
-        <img src="img/marcas/bioaqua.jpeg" alt="Nailen" onerror="this.src='https://via.placeholder.com/60?text=Nailen'">
-      </div>
-      <span class="brand-label">Nailen</span>
-    </button>
-
-    <!-- Puedes agregar más marcas duplicando este botón -->
-
-  </div>
-</div>
+    </div>
 
     <!-- Catálogo de Productos -->
     <div class="catalog-wrapper">
