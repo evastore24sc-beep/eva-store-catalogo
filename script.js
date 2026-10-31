@@ -25,6 +25,7 @@ const TEL_WHATSAPP = "+584149765297";
 let carrito = [];
 let productos = []; // Se llena dinámicamente desde Firestore
 let categoriaSeleccionada = "todos";
+let marcaSeleccionada = "todos";
 
 const catalogGrid = document.getElementById("catalog-grid");
 
@@ -71,7 +72,7 @@ function generarCardHTML(prod) {
         const options = prod.tonos.map(t => `<option value="${t}">${t}</option>`).join('');
         selectTonosHTML = `
             <div class="shade-select-box">
-                <label for="select-${prod.id}" class="shade-label">Selecciona tu tono:</label>
+                <label for="select-${prod.id}" class="shade-label">Tono:</label>
                 <select id="select-${prod.id}" class="shade-dropdown">
                     ${options}
                 </select>
@@ -85,6 +86,17 @@ function generarCardHTML(prod) {
         badgeHTML = `<span class="badge ${badgeClass}">${prod.badgeText || prod.badge}</span>`;
     }
 
+    // Botón desplegable para la descripción
+    let descripcionHTML = "";
+    if (prod.descripcion && prod.descripcion.trim() !== "") {
+        descripcionHTML = `
+            <details class="product-details-toggle">
+                <summary class="btn-toggle-desc">Ver detalles</summary>
+                <p class="product-description">${prod.descripcion}</p>
+            </details>
+        `;
+    }
+
     const card = document.createElement("article");
     card.className = "product-card";
     card.setAttribute("data-id", prod.id);
@@ -92,13 +104,12 @@ function generarCardHTML(prod) {
         ${badgeHTML}
         <div class="product-image">
             <img src="${prod.imagen}" alt="${prod.nombre}" loading="lazy">
-            <div class="image-overlay"></div>
         </div>
         <div class="product-info">
             <span class="category-tag">${prod.categoria}</span>
             <h3 class="product-title">${prod.nombre}</h3>
-            <p class="product-description">${prod.descripcion || ""}</p>
 
+            ${descripcionHTML}
             ${selectTonosHTML}
 
             <div class="product-footer">
@@ -115,7 +126,7 @@ function generarCardHTML(prod) {
     return card;
 }
 
-// Función principal que aplica Búsqueda + Categoría + Orden Alfabético
+// Función principal que aplica Búsqueda + Categoría + Marca + Orden Alfabético
 function aplicarFiltrosCatalogo() {
     if (!catalogGrid) return;
 
@@ -127,18 +138,23 @@ function aplicarFiltrosCatalogo() {
         clearBtn.style.display = query.length > 0 ? "block" : "none";
     }
 
-    // 1. Filtrar por Categoría y Texto de Búsqueda
+    // 1. Filtrar por Categoría, Marca y Texto de Búsqueda
     let resultados = productos.filter(p => {
         const catProducto = normalizarTexto(p.categoria);
         const catFiltro = normalizarTexto(categoriaSeleccionada);
-        
         const coincideCategoria = (catFiltro === "todos" || catProducto === catFiltro);
 
+        // Validar filtro de marcas (si el producto tiene la marca guardada en su categoría, nombre o campo marca)
+        const marcaProd = normalizarTexto(p.marca || p.categoria || "");
+        const marcaFiltro = normalizarTexto(marcaSeleccionada);
         const nombreProd = normalizarTexto(p.nombre);
         const descProd = normalizarTexto(p.descripcion);
+
+        const coincideMarca = (marcaSeleccionada === "todos" || marcaProd.includes(marcaFiltro) || nombreProd.includes(marcaFiltro));
+
         const coincideTexto = query === "" || nombreProd.includes(query) || descProd.includes(query);
 
-        return coincideCategoria && coincideTexto;
+        return coincideCategoria && coincideMarca && coincideTexto;
     });
 
     // 2. Ordenar alfabéticamente (A-Z)
@@ -152,12 +168,12 @@ function aplicarFiltrosCatalogo() {
     if (resultados.length === 0) {
         const msj = query 
             ? `No encontramos productos con "${searchInput.value}"`
-            : `No hay productos disponibles en esta categoría.`;
+            : `No hay productos disponibles con estos filtros.`;
 
         catalogGrid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem;">
                 <p style="font-size: 1.1rem; color: #222; font-weight: 600;">${msj}</p>
-                <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Intenta explorar otras categorías o realizar una búsqueda diferente.</p>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Intenta explorar otras categorías o marcas.</p>
             </div>
         `;
         return;
@@ -190,20 +206,15 @@ function toggleMenuLateral(abrir) {
 function filtrarCategoriaMain(categoria, btnElement) {
     categoriaSeleccionada = categoria;
 
-    // Actualizar estilo activo en los botones del panel
     const botones = document.querySelectorAll(".btn-sidebar-cat");
     botones.forEach(btn => btn.classList.remove("active"));
     if (btnElement) btnElement.classList.add("active");
 
-    // Reaplicar filtros y cerrar menú
     aplicarFiltrosCatalogo();
     toggleMenuLateral(false);
 
-    // 🚀 DESPLAZAMIENTO HASTA EL BUSCADOR (CON MAYOR MARGEN SUPERIOR)
     const searchContainer = document.querySelector(".search-container") || document.getElementById("search-input");
-    
     if (searchContainer) {
-        // Aumentamos el offset a 160px para que suba más la página y el buscador quede bien arriba
         const offset = 190; 
         const bodyRect = document.body.getBoundingClientRect().top;
         const elementRect = searchContainer.getBoundingClientRect().top;
@@ -211,13 +222,25 @@ function filtrarCategoriaMain(categoria, btnElement) {
         const offsetPosition = elementPosition - offset;
 
         window.scrollTo({
-            top: offsetPosition < 0 ? 0 : offsetPosition, // Evita valores negativos
+            top: offsetPosition < 0 ? 0 : offsetPosition,
             behavior: "smooth"
         });
     } else {
-        // Respaldo: Inicio absoluto de la página
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
+}
+
+// =========================================================
+// FILTRO POR MARCAS
+// =========================================================
+function filtrarMarca(marca, btnElement) {
+    marcaSeleccionada = marca;
+
+    const botonesMarca = document.querySelectorAll(".brand-circle-btn");
+    botonesMarca.forEach(btn => btn.classList.remove("active"));
+    if (btnElement) btnElement.classList.add("active");
+
+    aplicarFiltrosCatalogo();
 }
 
 // =========================================================
@@ -357,6 +380,7 @@ window.filtrarPorNombre = filtrarPorNombre;
 window.limpiarBuscador = limpiarBuscador;
 window.toggleMenuLateral = toggleMenuLateral;
 window.filtrarCategoriaMain = filtrarCategoriaMain;
+window.filtrarMarca = filtrarMarca;
 
 // Carga inicial
 document.addEventListener("DOMContentLoaded", () => {
